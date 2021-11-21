@@ -1,6 +1,7 @@
 const Movies = require('../models/movies');
-const mongoose = require('mongoose');
-const validator = require('validator');
+const IncorrectDataError = require("../errors/incorrect-data-err");
+const NotFoundError = require("../errors/not-found-err");
+const ForbiddenError = require("../errors/forbidden-err");
 
 const getMovies = (req, res, next) => {
   Movies.find({})
@@ -10,58 +11,56 @@ const getMovies = (req, res, next) => {
     .catch(next);
 };
 
+
+// создаем карточку
 const createMovie = (req, res, next) => {
-  const {
-    country, director,
-    duration, year,
-    description, image,
-    trailer, nameRU,
-    nameEN, thumbnail,
-    movieId,
+  const { country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId,
   } = req.body;
 
-  Movies.create({
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailer,
-    thumbnail,
-    movieId,
-    owner: req.user.id,
-    nameRU,
-    nameEN,
+  Movies.create({ country, director, duration, year, description, image, trailer,  thumbnail, movieId,
+    owner: req.user.id, nameRU, nameEN,
   })
-    .then((movie) => res.status(201).send(movie))
+    .then((movie) => res.send(movie))
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(ApiError.BadRequestError(errConfig.movie_create_error));
+      if (err.name === 'ValidationError') {
+        throw new IncorrectDataError('Некорректные данные');
       }
       next(err);
-    });
+    })
+    .catch(next);
 };
 
+
+// удаляем карточку
 const deleteMovie = (req, res, next) => {
-  const { movieId } = req.params;
-  Movies.findById(movieId)
-    .orFail(() => ApiError.NotFoundError(errConfig.movie_error_id))
+  Movies.findById(req.params.movieId)
+    .orFail(() => {
+      throw new NotFoundError('Нет карточки с таким id');
+    })
     .then((movie) => {
-      if (movie.owner.toString() !== req.user.id.toString()) {
-        next(ApiError.ForbiddenError(errConfig.movie_forbidden_error));
+      if (movie.owner.toString() === req.user._id) {
+        Movies.findOneAndRemove({
+          _id: req.params.movieId,
+          owner: req.user._id,
+        })
+          .then((delMovie) => res.send(delMovie));
+      } else {
+        throw new ForbiddenError('Нельзя удалить чужую карточку');
       }
-      Movies.findByIdAndRemove(movieId)
-        .then(() => res.send({ message: errConfig.movie_is_delete }))
-        .catch((err) => next(err));
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(ApiError.NotFoundError(errConfig.movie_error_id));
+      if (err.name === 'CastError') {
+        throw new IncorrectDataError('Некорректный id');
+      }
+      if (err.message === 'NotFound') {
+        throw new NotFoundError('Карточка не найдена');
       }
       next(err);
-    });
+    })
+    .catch(next);
 };
+
+
 
 module.exports = {
   getMovies,
