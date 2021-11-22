@@ -10,6 +10,16 @@ const method = (value) => {
   throw new IncorrectDataError('Неправильный URL');
 };
 
+
+const validateGetUser = celebrate({
+  params: Joi.object().keys({
+    _id: Joi.string().alphanum().length(24).hex(),
+  }),
+});
+
+
+
+
 const validateCreateUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
@@ -18,23 +28,17 @@ const validateCreateUser = celebrate({
   }),
 });
 
+const validateUpdateUser = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    email: Joi.string().required().email(),
+  }),
+});
+
 const validateLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
-  }),
-});
-
-const validateGetUser = celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().hex().length(24).required(),
-  }),
-});
-
-const validateUpdateUser = celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    about: Joi.string().required().min(2).max(30),
   }),
 });
 

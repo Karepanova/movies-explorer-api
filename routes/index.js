@@ -6,7 +6,10 @@ const auth = require('../middlewares/auth');
 const userRouter = require('./users');
 const movieRouter = require('./movies');
 
-router.post('/signup', createUser);
-router.post('/signin', login);
+router.post('/signin', validateLogin, login);
+router.post('/signup', validateCreateUser, createUser);
+
+router.use(auth, userRouter);
+router.use(auth, movieRouter);
 
 module.exports = router;

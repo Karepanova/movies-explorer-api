@@ -46,7 +46,7 @@ app.use(auth); // авторизация
 
 app.use('/users', require('./routes/users')); // все операции с пользователями (получить, удалить, изменить)
 
-app.use('/cards', require('./routes/cards')); // все операции с карточками
+app.use('/movie', require('./routes/movie')); // все операции с карточками
 
 app.use(() => {
   throw new NotFoundError('Ресурс не найден');

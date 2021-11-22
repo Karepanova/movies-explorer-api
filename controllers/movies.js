@@ -35,7 +35,7 @@ const createMovie = (req, res, next) => {
 const deleteMovie = (req, res, next) => {
   Movies.findById(req.params.movieId)
     .orFail(() => {
-      throw new NotFoundError('Нет карточки с таким id');
+      throw new NotFoundError('Нет фильма с таким id');
     })
     .then((movie) => {
       if (movie.owner.toString() === req.user._id) {
@@ -45,7 +45,7 @@ const deleteMovie = (req, res, next) => {
         })
           .then((delMovie) => res.send(delMovie));
       } else {
-        throw new ForbiddenError('Нельзя удалить чужую карточку');
+        throw new ForbiddenError('Нет доступа к удалению фильма');
       }
     })
     .catch((err) => {
@@ -53,7 +53,7 @@ const deleteMovie = (req, res, next) => {
         throw new IncorrectDataError('Некорректный id');
       }
       if (err.message === 'NotFound') {
-        throw new NotFoundError('Карточка не найдена');
+        throw new NotFoundError('Запрашиваемый ресурс не найден');
       }
       next(err);
     })
