@@ -43,7 +43,7 @@ const moviesSchema = new mongoose.Schema({
     },
   },
   owner: {
-    // type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     // ref: 'user',
     required: true,
   },
@@ -61,4 +61,4 @@ const moviesSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('card', moviesSchema);
+module.exports = mongoose.model('movies', moviesSchema);

@@ -1,9 +1,16 @@
+const bcrypt = require('bcryptjs'); // импортируем bcrypt
 const mongoose = require('mongoose');
-const validator = require('validator');
-const isEmail = require("validator");
+const isEmail = require('validator/lib/isEmail');
 const AuthError = require('../errors/auth-err');
 
 const userSchema = new mongoose.Schema({
+  name: {
+    type: String, // имя — это строка
+    required: false, // оно должно быть у каждого пользователя
+    minlength: 2, // минимальная длина имени — 2 символа
+    maxlength: 30, // а максимальная — 30 символов
+    default: 'Анастасия',
+  },
   email: {
     type: String,
     required: true,
@@ -17,13 +24,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     select: false,
-  },
-  name: {
-    type: String, // имя — это строка
-    required: false, // оно должно быть у каждого пользователя
-    minlength: 2, // минимальная длина имени — 2 символа
-    maxlength: 30, // а максимальная — 30 символов
-    default: 'Анастасия',
   },
 });
 
@@ -43,4 +43,4 @@ userSchema.statics.findUserByCredentials = function (email, password) {
     });
 };
 
-module.exports = mongoose.model('card', userSchema);
+module.exports = mongoose.model('user', userSchema);

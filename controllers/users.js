@@ -54,8 +54,8 @@ const createUser = (req, res, next) => {
 
 // обновление пользователя
 const updateUser = (req, res, next) => {
-  const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
+  const { name } = req.body;
+  User.findByIdAndUpdate(req.user._id, { name }, { new: true, runValidators: true })
     .orFail(() => {
       throw new NotFoundError('Нет пользователя с таким id');
     })

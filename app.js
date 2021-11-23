@@ -18,7 +18,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // подключаемся к серверу mongo
-mongoose.connect('mongodb://localhost:27017//bitfilmsdb', {
+mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
   // useCreateIndex: true,
   // useFindAndModify: false
@@ -32,7 +32,7 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.use(require('./routes/index'));
+app.use('/', require('./routes/index'));
 
 // app.post('/signin', validateLogin, login); // вход
 
