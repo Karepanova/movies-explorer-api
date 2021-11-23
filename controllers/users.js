@@ -94,10 +94,13 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
+// удалить куки
+function signOut(req, res) { res.clearCookie('jwt').end(); }
+
 module.exports = {
-  // getUsers,
   getUser,
   createUser,
   updateUser,
   login,
+  signOut,
 };
