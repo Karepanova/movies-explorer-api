@@ -1,11 +1,8 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { errors } = require('celebrate');
-// const { createUser, login, } = require('./controllers/users');
-// const { validateCreateUser, validateLogin, } = require('./middlewares/validations');
 const auth = require('./middlewares/auth');
 const centralErrors = require('./middlewares/errors');
 const NotFoundError = require('./errors/not-found-err');
@@ -34,10 +31,6 @@ app.get('/crash-test', () => {
 
 app.use('/', require('./routes/index'));
 
-// app.post('/signin', validateLogin, login); // вход
-
-// app.post('/signup', validateCreateUser, createUser); // регистрация
-
 app.use(auth); // авторизация
 
 app.use('/users', require('./routes/users')); // все операции с пользователями (получить, удалить, изменить)
@@ -48,7 +41,8 @@ app.use(() => {
   throw new NotFoundError('Ресурс не найден');
 });
 
-app.use(errorLogger); // подключаем логгер ошибок после обработчиков роутов и до обработчиков ошибок:
+// подключаем логгер ошибок после обработчиков роутов и до обработчиков ошибок:
+app.use(errorLogger);
 
 app.use(errors()); // обработчик ошибок celebrate
 

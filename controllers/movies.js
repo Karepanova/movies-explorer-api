@@ -1,7 +1,7 @@
 const Movies = require('../models/movies');
-const IncorrectDataError = require("../errors/incorrect-data-err");
-const NotFoundError = require("../errors/not-found-err");
-const ForbiddenError = require("../errors/forbidden-err");
+const IncorrectDataError = require('../errors/incorrect-data-err');
+const NotFoundError = require('../errors/not-found-err');
+const ForbiddenError = require('../errors/forbidden-err');
 
 const getMovies = (req, res, next) => {
   Movies.find({})
@@ -11,14 +11,35 @@ const getMovies = (req, res, next) => {
     .catch(next);
 };
 
-
 // создаем карточку
 const createMovie = (req, res, next) => {
-  const { country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId,
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailer,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
   } = req.body;
 
-  Movies.create({ country, director, duration, year, description, image, trailer,  thumbnail, movieId,
-    owner: req.user.id, nameRU, nameEN,
+  Movies.create({
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailer,
+    thumbnail,
+    movieId,
+    owner: req.user._id,
+    nameRU,
+    nameEN,
   })
     .then((movie) => res.send(movie))
     .catch((err) => {
@@ -29,7 +50,6 @@ const createMovie = (req, res, next) => {
     })
     .catch(next);
 };
-
 
 // удаляем карточку
 const deleteMovie = (req, res, next) => {
@@ -59,8 +79,6 @@ const deleteMovie = (req, res, next) => {
     })
     .catch(next);
 };
-
-
 
 module.exports = {
   getMovies,

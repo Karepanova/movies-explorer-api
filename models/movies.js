@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const isEmail = require("validator");
+const validator = require('validator');
 
 const moviesSchema = new mongoose.Schema({
   country: {
@@ -8,6 +8,10 @@ const moviesSchema = new mongoose.Schema({
   },
   director: {
     type: String,
+    required: true,
+  },
+  duration: {
+    type: Number,
     required: true,
   },
   year: {
@@ -44,11 +48,10 @@ const moviesSchema = new mongoose.Schema({
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    // ref: 'user',
     required: true,
   },
   movieId: {
-    type: Number,
+    type: String,
     required: true,
   },
   nameRU: {

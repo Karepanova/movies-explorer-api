@@ -10,15 +10,11 @@ const method = (value) => {
   throw new IncorrectDataError('Неправильный URL');
 };
 
-
 const validateGetUser = celebrate({
   params: Joi.object().keys({
     userId: Joi.string().alphanum().length(24).hex(),
   }),
 });
-
-
-
 
 const validateCreateUser = celebrate({
   body: Joi.object().keys({

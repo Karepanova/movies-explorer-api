@@ -26,7 +26,6 @@ const getUser = (req, res, next) => {
 
 // создание пользователя
 const createUser = (req, res, next) => {
-  // получим из объекта запроса имя и описание пользователя
   const {
     name,
     email,
@@ -94,13 +93,9 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
-// удалить куки
-function signOut(req, res) { res.clearCookie('jwt').end(); }
-
 module.exports = {
   getUser,
   createUser,
   updateUser,
   login,
-  signOut,
 };
