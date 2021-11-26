@@ -5,22 +5,13 @@ const NotFoundError = require('../errors/not-found-err');
 const IncorrectDataError = require('../errors/incorrect-data-err');
 const DuplicateError = require('../errors/duplicate-err');
 
-// получить пользователя по ID
-const getUser = (req, res, next) => {
-  User.findById(req.params.userId)
+// получить пользователя
+const getUserMe = (req, res, next) => {
+  User.findById(req.user._id)
     .orFail(() => {
       throw new NotFoundError('Нет пользователя с таким id');
     })
-    .then((users) => res.send(users))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new IncorrectDataError('Некорректный id');
-      }
-      if (err.message === 'NotFound') {
-        throw new NotFoundError('Пользователь не найден');
-      }
-      next(err);
-    })
+    .then((user) => res.send(user))
     .catch(next);
 };
 
@@ -94,7 +85,7 @@ const login = (req, res, next) => {
 };
 
 module.exports = {
-  getUser,
+  getUserMe,
   createUser,
   updateUser,
   login,

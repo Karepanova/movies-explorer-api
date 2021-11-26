@@ -8,6 +8,12 @@ const { validateLogin, validateCreateUser } = require('../middlewares/validation
 router.post('/signin', validateLogin, login);
 router.post('/signup', validateCreateUser, createUser);
 
+router.use(auth); // авторизация
+
+router.use('/users', require('./users')); // все операции с пользователями (получить, удалить, изменить)
+
+router.use('/movies', require('./movies')); // все операции с карточками
+
 router.use(auth, userRouter);
 router.use(auth, movieRouter);
 
