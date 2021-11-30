@@ -6,10 +6,9 @@ const AuthError = require('../errors/auth-err');
 const userSchema = new mongoose.Schema({
   name: {
     type: String, // имя — это строка
-    required: false, // оно должно быть у каждого пользователя
+    required: true, // оно должно быть у каждого пользователя
     minlength: 2, // минимальная длина имени — 2 символа
     maxlength: 30, // а максимальная — 30 символов
-    default: 'Анастасия',
   },
   email: {
     type: String,

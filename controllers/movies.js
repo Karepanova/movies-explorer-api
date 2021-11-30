@@ -59,7 +59,7 @@ const deleteMovie = (req, res, next) => {
     })
     .then((movie) => {
       if (movie.owner.toString() === req.user._id) {
-        Movies.findOneAndRemove({
+        return Movies.findOneAndRemove({
           _id: req.params.movieId,
           owner: req.user._id,
         })

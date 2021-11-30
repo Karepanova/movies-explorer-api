@@ -44,8 +44,8 @@ const createUser = (req, res, next) => {
 
 // обновление пользователя
 const updateUser = (req, res, next) => {
-  const { name } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name }, { new: true, runValidators: true })
+  const { name, email } = req.body;
+  User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
     .orFail(() => {
       throw new NotFoundError('Нет пользователя с таким id');
     })
@@ -59,6 +59,9 @@ const updateUser = (req, res, next) => {
       }
       if (err.name === 'CastError') {
         throw new IncorrectDataError('Некорректный id');
+      }
+      if (err.name === 'MongoServerError' && err.code === 11000) {
+        throw new DuplicateError('Пользователь с таким email уже существует!');
       }
       next(err);
     })
