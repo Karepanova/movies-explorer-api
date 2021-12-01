@@ -64,9 +64,8 @@ const deleteMovie = (req, res, next) => {
           owner: req.user._id,
         })
           .then((delMovie) => res.send(delMovie));
-      } else {
-        throw new ForbiddenError('Нет доступа к удалению фильма');
       }
+      throw new ForbiddenError('Нет доступа к удалению фильма');
     })
     .catch((err) => {
       if (err.name === 'CastError') {
