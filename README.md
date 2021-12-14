@@ -1,10 +1,10 @@
 # movies-explorer-api
 
-Backend: https://api.karepanova.nomoredomains.work/
+Backend: https://api.movies-explorer.karepanova.ru/
 
-Frontend: https://karepanova.nomoredomains.work/
+Frontend: https://movies-explorer.karepanova.ru/
 
-IP: 51.250.6.1
+IP: 45.86.183.246
 
 
 
